@@ -7,7 +7,7 @@
 # <https://github.com/KFERMercer/OpenWrt-CI>
 #
 
-name: Hiwifi3
+name: OpenWrt-CI
 
 on:
   push:
@@ -19,13 +19,10 @@ on:
   #   types: [published]
 
 jobs:
-
   build:
-
     runs-on: ubuntu-latest
 
     steps:
-
       - name: Checkout
         uses: actions/checkout@master
         with:
@@ -64,7 +61,7 @@ jobs:
           ./scripts/feeds update -a
           ./scripts/feeds install -a
 
-      - name: Generate configuration file
+      - name: Costom configure file
         run: |
           rm -f ./.config*
           touch ./.config
@@ -108,13 +105,6 @@ jobs:
           # CONFIG_TARGET_x86_64=y
           # CONFIG_TARGET_x86_64_Generic=y
           # EOF
-          
-          # 编译极路由3固件:
-          cat >> .config <<EOF
-          CONFIG_TARGET_ramips=y
-          CONFIG_TARGET_ramips_mt7620=y
-          CONFIG_TARGET_ramips_mt7620_DEVICE_hiwifi_hc5861=y
-          EOF
 
           # 固件压缩:
           # cat >> .config <<EOF
@@ -155,9 +145,10 @@ jobs:
            cat >> .config <<EOF
            CONFIG_PACKAGE_luci-app-adbyby-plus=y
            CONFIG_PACKAGE_luci-app-aria2=y
-          # CONFIG_PACKAGE_luci-app-baidupcs-web=y
-          # CONFIG_PACKAGE_luci-app-docker=y
+           CONFIG_PACKAGE_luci-app-baidupcs-web=y
+           CONFIG_PACKAGE_luci-app-docker=y
            CONFIG_PACKAGE_luci-app-frpc=y
+          # CONFIG_PACKAGE_luci-app-hd-idle=y
           # CONFIG_PACKAGE_luci-app-kodexplorer=y
           # CONFIG_PACKAGE_luci-app-minidlna=y
            CONFIG_PACKAGE_luci-app-openvpn=y
@@ -174,14 +165,6 @@ jobs:
           # CONFIG_PACKAGE_luci-app-webadmin=y
           # CONFIG_PACKAGE_luci-app-wireguard=y
           # CONFIG_PACKAGE_luci-app-wrtbwmon=y
-          luci-app-vlmcsd  #KMS服务器设置
-          luci-app-dockerman  #Docker容器
-          luci-app-xlnetacc  #迅雷快鸟
-          luci-app-unblockneteasemusic-go  #解锁网易云歌曲 
-          luci-app-unblockmusic  #解锁网易云灰色歌曲
-          luci-app-syncdial  #多拨虚拟网卡（原macvlan）
-          luci-app-firewall   #添加防火墙
-          luci-app-baidupcs-web  #百度网盘管理
            EOF
 
           # LuCI主题:
@@ -192,14 +175,14 @@ jobs:
 
           # 常用软件包:
           # cat >> .config <<EOF
-           CONFIG_PACKAGE_curl=y
+          # CONFIG_PACKAGE_curl=y
           # CONFIG_PACKAGE_htop=y
           # CONFIG_PACKAGE_nano=y
           # CONFIG_PACKAGE_screen=y
           # CONFIG_PACKAGE_tree=y
           # CONFIG_PACKAGE_vim-fuller=y
-           CONFIG_PACKAGE_wget=y
-           EOF
+          # CONFIG_PACKAGE_wget=y
+          # EOF
 
           # 取消编译VMware镜像以及镜像填充 (不要删除被缩进的注释符号):
           # cat >> .config <<EOF
